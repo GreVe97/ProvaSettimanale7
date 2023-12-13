@@ -1,1 +1,28 @@
 
+<form class="" onsubmit="event.preventDefault()">
+    <div class="card d-flex align-items px-1 pt-2" style="width: 18rem; height: 99%">
+    <label  class="form-label ms-3 mt-2 mb-0 fw-semibold">Nuovo url immagine</label>
+    <input type="url" class="form-control mb-3"  value="${prodotto.imageUrl}" required>
+    <div class="card-body d-flex flex-column justify-content-between">
+        <div class="">
+            <div class="card-title">
+            <label class="form-label ms-2 mb-0 fw-semibold">Nuovo nome</label>
+            <input type="text" class="form-control mb-0" value="${prodotto.name}" required>
+            <p class="p-0 pt-1 ms-2 text-danger visually-hidden" >* Nome già assegnato, inserire un altro nome.</p>
+            </div> 
+            <label  class="form-label ms-2 mb-0 fw-semibold">Nuovo Brand</label>
+            <input type="text" class="form-control mb-3" value="${prodotto.brand}" required>                           
+            
+            <label class="form-label card-text ms-2 mb-0 fw-semibold">Nuova Descrizione</label>
+            <textarea class="form-control card-text mb-3"  aria-label="With textarea" value="" required>${prodotto.description}</textarea>
+            
+        </div>
+        <div>
+            <label class="form-label ms-2 mb-0 fw-semibold">Nuovo Prezzo</label>
+            <input type="number" class="form-control mb-3 " value="${prodotto.price}" required> 
+            <button type="submit" class="btn btn-primary" onclick="modifica()">Conferma</button>
+            <button class="btn btn-danger" onclick="indietro(${oldInnerHTML})">Annulla</button>
+        </div>
+    </div>
+    </div>
+    </form>

@@ -58,46 +58,15 @@
         <button type="button" class="btn btn-secondary btn-lg" onclick="mettiForm()">Aggiungi nuovo elemento</button>
         
     </div>
-    <main class="container">
-      <form class="row g-3">
-        <div class="col-md-4">
-          <label for="nome" class="form-label">Nome oggetto</label>
-          <input type="text" class="form-control" id="nome" required>
-        </div>
-        <div class="col-md-4">
-          <label for="descrizione" class="form-label">Descrizione oggetto</label>
-          <textarea class="form-control" id="descrizione" aria-label="With textarea" required></textarea>
-          
-        </div>
-        <div class="col-md-4">
-          <label for="brand" class="form-label">Brand oggetto</label>
-          <input type="text" class="form-control" id="brand" required>
-        </div>
-        <div class="col-md-3">
-          <label for="url" class="form-label">Url immagine</label>
-          <input type="url" class="form-control" id="url" required>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label for="prezzo" class="form-label">Prezzo</label>
-          <div class="d-flex">
-            <input type="number" class="form-control" id="prezzo" required>
-            <select class="form-select ms-1" id="valuta" style="width:25vh" aria-label="Default select example">
-              <option value="£">£</option>
-              <option value="$">$</option>
-              <option value="€">€</option>
-            </select>
-          </div>
-          
-          
-        </div>
-        
-        <div class="col-12">
-          <input class="btn btn-secondary" type="reset" value="Reset">
-          <button class="btn btn-primary" type="submit" onclick="aggiungiElemento()">Conferma</button>
-        </div>
-      </form>
+    <main class="container"> 
+      <div id="form" class="mb-5">
+      </div>
 
+      <div class="container">
+
+        <div  id="oggetti" class="d-flex justify-content-evenly flex-wrap"></div>
+
+      </div>
 
     </main>
     <footer>
