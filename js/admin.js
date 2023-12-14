@@ -20,7 +20,9 @@ function memorizzoProdottiDaAPI() {
         .then(response => response.json())
         .then(json => {
             arrayProdotti = json;
-            console.log(arrayProdotti);
+            if(document.querySelector("#oggetti").classList.contains("presente")){
+                mettiElementi();
+            }
         })
         .catch(error => console.log(error))    
 }
@@ -28,7 +30,7 @@ function memorizzoProdottiDaAPI() {
 
 
 function creaProdotto(nome, descrizione, brand, url, prezzo) {
-    if (controlla(nome)){
+    if (controlla(nome)){            /* A quanto pare l'API non accetta due oggetti con lo stesso nome */
         let prodotto={};
         prodotto.name=nome;
         prodotto.description=descrizione;
@@ -55,66 +57,61 @@ function mettiElementi() {
     div.innerHTML = "";
     div.classList.add("presente");
     arrayProdotti.forEach(ele => {
-        div.innerHTML += `<div>
-                            <div class="card d-flex align-items" style="width: 18rem; height: 99%">
-                                        <img src="${ele.imageUrl}" class="card-img-top" alt="Copertina">
-                                        <div class="card-body d-flex flex-column justify-content-between">
-                                            <div class="">
-                                                <h5 class="card-title">${ele.name}</h5>
-                                                <span class="badge rounded-pill text-bg-dark">${ele.brand}</span>
-                                                <p class="card-text">${ele.description}</p>
-                                            </div>
-                                            <div>
-                                                <p class="card-text"><span class="prezzo">${ele.price}</span>€</p>
-                                                <button class="btn btn-primary" onclick="modificaProdotto(event,'${ele.name}')">Modifica</button>
-                                                <button class="btn btn-danger">Elimina</button>
-                                            </div>
-                                        </div>
-                            </div>
-                        </div>`
+        div.innerHTML += `
+        <div class="mb-2">
+        <div class="card d-flex flex-column" style="width: 18rem; height: 99%">
+            <div>
+                <img src="${ele.imageUrl}" class="card-img-top" alt="Copertina">
+                <div class="d-flex flex-column justify-content-between p-2">
+                    <h5 class="card-title ">${ele.name}</h5>
+                    <a href="#" class="mt-2"><span class="badge rounded-pill text-bg-dark">${ele.brand}</span></a>
+                    <p class="mt-2">${ele.description}</p>
+                </div>
+            </div>
+            <div class="mt-auto px-2 pb-1">
+                <p class="card-text ms-1"><span class="prezzo">${ele.price}</span>€</p>
+                <button class="btn btn-primary" onclick="modificaProdotto(event,'${ele._id}')">Modifica</button>
+                <button class="btn btn-danger">Elimina</button>
+            </div>
+        </div>
+    </div>
+        
+        `
     });
 
 }
 
-function modificaProdotto(e, nome) {
-    console.log(nome);
+function modificaProdotto(e, id) {
     let card = e.target.closest("div .card");
-    let prodotto = arrayProdotti.find(ele => ele.name == nome);
-    console.log(prodotto);
-    console.log(prodotto.controlla("ciao"));
+    let prodotto = arrayProdotti.find(ele => ele._id == id);
     console.log(prodotto);
     console.log(arrayProdotti);
     let oldHTML = card.innerHTML;
 
     card.innerHTML = `
-                     <form class="" onsubmit="event.preventDefault()">                    
-                    <label  class="form-label ms-3 mt-2 mb-0 fw-semibold">Nuovo url immagine</label>
-                    <input type="url" class="form-control mb-3 url"  value="${prodotto.imageUrl}" required>
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div class="">
-                            <div class="card-title">
-                            <label class="form-label ms-2 mb-0 fw-semibold">Nuovo nome</label>
-                            <input type="text" class="form-control mb-0 nome" value="${prodotto.name}" required>
-                            <p class="p-0 pt-1 ms-2 text-danger invisible" >*Nome già assegnato, inserire un altro nome.</p>
-                            </div> 
-                            <label class="form-label ms-2 mb-0 fw-semibold">Nuovo Brand</label>
-                            <input type="text" class="form-control mb-3 brand" value="${prodotto.brand}" required>                           
-                            
-                            <label class="form-label card-text ms-2 mb-0 fw-semibold">Nuova Descrizione</label>
-                            <textarea class="form-control card-text mb-3 descrizione"  aria-label="With textarea " value="" required>${prodotto.description}</textarea>                            
-                        </div>
+                    <form class="d-flex flex-column px-2" onsubmit="event.preventDefault()">
+                        <label class="form-label ms-3 mt-2 mb-0 fw-semibold">Nuovo url immagine</label>
+                        <input type="url" class="form-control mb-3 url" value="${prodotto.imageUrl}" required>
+                        <label class="form-label ms-2 mb-0 fw-semibold">Nuovo nome</label>
+                        <input type="text" class="form-control mb-0 nome" value="${prodotto.name}" required>
+                        <p class="p-0 pt-1 ms-2 text-danger invisible">*Nome già assegnato, inserire un altro nome.</p>
+                        <label class="form-label ms-2 mb-0 fw-semibold">Nuovo Brand</label>
+                        <input type="text" class="form-control mb-3 brand" value="${prodotto.brand}" required>
+                        <label class="form-label card-text ms-2 mb-0 fw-semibold">Nuova Descrizione</label>
+                        <textarea class="form-control card-text mb-3 descrizione" aria-label="With textarea " value=""
+                            required>${prodotto.description}</textarea>
+                        <label class="form-label ms-2 mb-0 fw-semibold">Nuovo Prezzo</label>
+                        <input type="number" class="form-control mb-3 prezzo" value="${prodotto.price}" required>
                         <div>
-                            <label class="form-label ms-2 mb-0 fw-semibold">Nuovo Prezzo</label>
-                            <input type="number" class="form-control mb-3 prezzo" value="${prodotto.price}" required> 
-                            <button type="submit" class="btn btn-primary" onclick="modifica(event)">Conferma</button>
-                            <button class="btn btn-danger" id="annulla" onclick="" > Annulla</button>
-                        </div>
-                    </div>
-                    </form> `
+                            <button type="submit" class="btn btn-primary" onclick="modifica(event,'${prodotto._id}')">Conferma</button>
+                            <button class="btn btn-danger" id="annulla" onclick=""> Annulla</button>
+                        </div>                        
+                    </form>    
+                      `
 
     console.log(oldHTML);
     card.querySelector("#annulla").addEventListener("click", (e) => {
-        indietro(e.target, oldHTML)
+        indietro(e.target, oldHTML);
     })
 }
 
@@ -125,11 +122,13 @@ function indietro(e, html) {
     card.innerHTML = html;
 }
 
-function modifica(e) {
+function modifica(e,id) {
     let card =e.target.closest(".card");
     card.querySelector("p").classList.add("invisible");
     card.querySelector(".nome").classList.remove("border", "border-danger");
     let nome = card.querySelector(".nome").value.trim();
+    let prodotto = arrayProdotti.find(ele => ele._id == id);
+    console.log(prodotto);
     let descrizione = card.querySelector(".descrizione").value.trim();
     let brand = card.querySelector(".brand").value.trim();
     let url = card.querySelector(".url").value.trim();
@@ -138,10 +137,12 @@ function modifica(e) {
     console.log(modelloUrl.test(url));
     if (modelloUrl.test(url)) {
         try {
-            if (nome && descrizione && brand && prezzo) {
-                fetch(urlAPI+"657987ea26761400183c486d", {
+            if (nome && descrizione && brand && prezzo) {                  
+                console.log(prodotto);
+                fetch(urlAPI+id, {
                     method: "PUT",
                     body: JSON.stringify({
+                        _id:id,
                         name: nome,
                         description: descrizione,
                         brand: brand,
@@ -151,23 +152,20 @@ function modifica(e) {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
-                    },
-                });
+                    }
+                }).then(response => {response.json();
+                    console.log(response);
+                    console.log("modifica avvenuta con successo");
+                    memorizzoProdottiDaAPI()})
+                .catch(error => console.log(error));
             }
         } catch (error) {
+            console.log(error)
             card.querySelector("p").classList.remove("invisible");
             card.querySelector(".nome").classList.add("border", "border-danger");
         }
-
     }
-
-
-   
-
 }
-
-
-
 
 function mettiForm() {
     let div = document.querySelector("#form");
@@ -224,7 +222,6 @@ function aggiungiElemento() {
             document.querySelector("#nomePreso").classList.remove("invisible");
             document.querySelector("#nome").classList.add("border", "border-danger");
         }
-
     }
 }
 
